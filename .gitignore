@@ -1,0 +1,9 @@
+node_modules/
+out/
+dist/
+tests/e2e/capturas/
+Auxiliar de Carteira/
+*.log
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
