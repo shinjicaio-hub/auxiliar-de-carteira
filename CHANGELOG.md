@@ -1,5 +1,14 @@
 # Histórico de versões
 
+## 0.2.0 — Renda e despesas fixas
+
+### Novidades
+
+- **Área Renda e despesas fixas:** cadastro direto de salário e contas mensais, com totais e despesas agrupadas por categoria.
+- **Categorias novas:** Água, Cartão de crédito, Conta de luz, Gás, Internet e Telefone.
+- Criação de categoria direto no formulário.
+- Vencimento no dia 31 é mantido mesmo quando a despesa começa em um mês mais curto.
+
 ## 0.1.0 — Primeira versão
 
 ### Novidades
