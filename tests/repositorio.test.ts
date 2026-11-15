@@ -560,6 +560,34 @@ describe('backup e restauração', () => {
     await expect(banco.restaurarBackup(backup)).rejects.toThrow()
   })
 
+  it('backup automático guarda uma cópia válida e mantém só as mais recentes', async () => {
+    recorrente({ nome: 'Antes de atualizar' })
+    const caminhos: string[] = []
+    for (let i = 0; i < 7; i++) {
+      caminhos.push(await banco.backupAutomatico('antes-da-atualizacao', 3))
+      await new Promise((r) => setTimeout(r, 5))
+    }
+    const { readdirSync } = await import('node:fs')
+    const restantes = readdirSync(join(pasta, 'copias-de-seguranca'))
+    expect(restantes).toHaveLength(3)
+    expect(restantes.sort()).toEqual(caminhos.slice(-3).map((c) => c.split(/[\\/]/).pop()).sort())
+    validarBackup(caminhos[6]!)
+    const db = new Database(caminhos[6]!, { readonly: true })
+    expect(db.prepare('SELECT count(*) AS n FROM series').get()).toEqual({ n: 1 })
+    db.close()
+  })
+
+  it('backup automático não apaga cópias de outro motivo', async () => {
+    const restauracao = join(pasta, 'restauracao.sqlite')
+    await banco.exportarBackup(restauracao)
+    await banco.restaurarBackup(restauracao)
+    await banco.backupAutomatico('antes-da-atualizacao', 1)
+    const { readdirSync } = await import('node:fs')
+    const nomes = readdirSync(join(pasta, 'copias-de-seguranca'))
+    expect(nomes.some((n) => n.startsWith('antes-da-restauracao-'))).toBe(true)
+    expect(nomes.some((n) => n.startsWith('antes-da-atualizacao-'))).toBe(true)
+  })
+
   it('recusa exportar por cima do banco em uso', async () => {
     await expect(banco.exportarBackup(banco.caminho)).rejects.toThrow(/diferente/)
   })

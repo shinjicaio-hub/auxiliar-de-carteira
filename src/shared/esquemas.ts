@@ -123,6 +123,7 @@ export const esquemaRenomearCategoria = z.object({ id: esquemaId, nome: nomeCate
 export const esquemaCategoriaAtiva = z.object({ id: esquemaId, ativa: z.boolean() })
 export const esquemaIdCategoria = z.object({ id: esquemaId })
 export const esquemaVazio = z.undefined()
+export const esquemaAtivacao = z.object({ ativa: z.boolean() })
 
 export type CriarLancamento = z.output<typeof esquemaCriarLancamento>
 export type EditarOcorrencia = z.output<typeof esquemaEditarOcorrencia>

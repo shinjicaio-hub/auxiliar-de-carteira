@@ -1,7 +1,7 @@
 {
   "name": "auxiliar-de-carteira",
   "productName": "Auxiliar de Carteira",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Organizador de orçamento mensal pessoal, offline.",
   "author": "Caio Shinji",
   "private": true,
@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run",
     "test:e2e": "npm run build && vitest run --config vitest.e2e.config.mts",
-    "dist": "npm run typecheck && npm run test && npm run build && electron-builder --win nsis"
+    "dist": "npm run typecheck && npm run test && npm run build && electron-builder --win nsis --publish never"
   },
   "build": {
     "appId": "com.auxiliardecarteira.app",
@@ -52,10 +52,18 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Auxiliar de Carteira",
       "artifactName": "Auxiliar-de-Carteira-Setup-${version}.${ext}"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "shinjicaio-hub",
+        "repo": "auxiliar-de-carteira"
+      }
+    ]
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
+    "electron-updater": "^6.8.11",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "zod": "^4.6.7"

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { hojeLocal, mesDaData } from '../../shared/datas'
+import { FaixaAtualizacao } from './componentes/Atualizacao'
 import { SeletorMes } from './componentes/Basicos'
 import { FormRapido } from './componentes/FormRapido'
 import {
@@ -65,6 +66,7 @@ export function App() {
         ))}
       </nav>
       <main className="conteudo">
+        <FaixaAtualizacao />
         <header className="topo">
           <h1>{titulo}</h1>
           {area !== 'configuracoes' && (

@@ -20,6 +20,25 @@ export interface InfoDados {
   temDemonstracao: boolean
 }
 
+/** Canal de mão única: o processo principal avisa a interface quando o estado muda. */
+export const CANAL_ESTADO_ATUALIZACAO = 'carteira:estadoAtualizacao'
+
+export type EstadoAtualizacao =
+  | { fase: 'indisponivel' }
+  | { fase: 'parada' }
+  | { fase: 'verificando' }
+  | { fase: 'atualizado' }
+  | { fase: 'disponivel'; versao: string }
+  | { fase: 'baixando'; versao: string; percentual: number }
+  | { fase: 'pronta'; versao: string }
+  | { fase: 'erro'; mensagem: string }
+
+export interface InfoAtualizacao {
+  versaoAtual: string
+  automatica: boolean
+  estado: EstadoAtualizacao
+}
+
 export interface ResultadoBackup {
   concluido: boolean
   caminho?: string
@@ -46,6 +65,11 @@ export interface OperacoesCarteira {
   removerDemonstracao(): void
   exportarBackup(): ResultadoBackup
   restaurarBackup(): ResultadoBackup
+  infoAtualizacao(): InfoAtualizacao
+  verificarAtualizacao(): void
+  baixarAtualizacao(): void
+  instalarAtualizacao(): void
+  definirAtualizacaoAutomatica(p: { ativa: boolean }): void
 }
 
 export type NomeOperacao = keyof OperacoesCarteira
@@ -70,7 +94,12 @@ export const OPERACOES = [
   'carregarDemonstracao',
   'removerDemonstracao',
   'exportarBackup',
-  'restaurarBackup'
+  'restaurarBackup',
+  'infoAtualizacao',
+  'verificarAtualizacao',
+  'baixarAtualizacao',
+  'instalarAtualizacao',
+  'definirAtualizacaoAutomatica'
 ] as const satisfies readonly NomeOperacao[]
 
 export function canalDe(operacao: NomeOperacao): string {
@@ -81,4 +110,7 @@ export type ApiCarteira = {
   [K in NomeOperacao]: (
     ...args: Parameters<OperacoesCarteira[K]>
   ) => Promise<Resposta<ReturnType<OperacoesCarteira[K]>>>
+} & {
+  /** Recebe cada mudança no estado da atualização. Devolve a função que para de ouvir. */
+  aoMudarAtualizacao(ouvinte: (estado: EstadoAtualizacao) => void): () => void
 }

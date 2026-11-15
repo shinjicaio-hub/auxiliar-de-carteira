@@ -1183,3 +1183,29 @@ form.painel > .aviso {
 .opcao input {
   min-height: 0;
 }
+
+/* Atualização */
+
+.faixa-atualizacao {
+  align-items: center;
+  background: var(--primaria-suave);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  justify-content: space-between;
+  margin: 0 auto 16px;
+  max-width: 1240px;
+  padding: 12px 16px;
+}
+
+.faixa-progresso {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+}
+
+.faixa-atualizacao .aviso {
+  flex-basis: 100%;
+}

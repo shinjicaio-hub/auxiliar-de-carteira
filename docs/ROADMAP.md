@@ -61,6 +61,14 @@ As ocorrências de cada mês são **calculadas**, não gravadas. Navegar entre m
 - Cor segue a entidade: Compromissos, Gastos livres, Lazer e Investimento têm a mesma cor em todos os gráficos.
 - A preferência de tema fica no localStorage, por ser só visual. Nenhum dado financeiro passa por ali.
 
+### Atualização automática
+
+- electron-updater lendo as Releases do GitHub. O `npm run dist` gera o instalador, o `.blockmap` e o `latest.yml`, e os três vão para a release.
+- Nada é baixado ou instalado sem a pessoa pedir. Antes de instalar, é feito um backup automático.
+- Sem assinatura digital, o electron-updater não verifica o editor do instalador, mas confere o SHA-512 do arquivo baixado contra o `latest.yml`.
+- A preferência de busca automática fica em `configuracoes.json`, na pasta de dados.
+- Os testes da atualização usam um servidor local que imita as Releases (`AUX_CARTEIRA_URL_ATUALIZACAO`) e rodam só no aplicativo empacotado.
+
 ### Comportamentos definidos
 
 - Edição "a partir de" substitui as versões posteriores. Edições pontuais já feitas em meses futuros continuam valendo, porque são exceções explícitas.

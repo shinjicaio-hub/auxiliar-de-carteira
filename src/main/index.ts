@@ -1,6 +1,8 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, dialog, Menu, shell } from 'electron'
 import { GerenciadorBanco } from './db/gerenciador'
+import { Atualizador } from './atualizacao'
+import { Configuracoes } from './configuracoes'
 import { registrarIpc } from './ipc'
 
 // Usado apenas pelos testes automatizados, para não tocar nos dados reais.
@@ -57,8 +59,13 @@ function iniciar(): void {
     app.quit()
     return
   }
-  registrarIpc(banco)
+  const atualizador = new Atualizador(
+    banco,
+    new Configuracoes(join(app.getPath('userData'), 'configuracoes.json'))
+  )
+  registrarIpc(banco, atualizador)
   criarJanela()
+  atualizador.iniciar()
 }
 
 // Uma só instância: duas janelas não devem gravar no mesmo banco.

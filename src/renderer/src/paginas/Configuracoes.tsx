@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { esquemaCriarCategoria, primeiraMensagem } from '../../../shared/esquemas'
 import type { Categoria } from '../../../shared/tipos'
 import { chamar, mensagemDe, useDados } from '../api'
+import { SecaoAtualizacao } from '../componentes/Atualizacao'
 import { Aviso, Confirmacao, Dialogo } from '../componentes/Basicos'
 import { lerTema, salvarTema, type Tema } from '../tema'
 
@@ -195,6 +196,8 @@ export function Configuracoes({
           </tbody>
         </table>
       </section>
+
+      <SecaoAtualizacao />
 
       <section className="painel">
         <h3>Aparência</h3>

@@ -15,10 +15,12 @@ import {
   esquemaRegistrarRealizado,
   esquemaRenomearCategoria,
   esquemaVazio,
+  esquemaAtivacao,
   primeiraMensagem
 } from '../shared/esquemas'
 import { ErroNegocio } from './db/erros'
 import type { GerenciadorBanco } from './db/gerenciador'
+import type { Atualizador } from './atualizacao'
 
 /** Só aceita chamadas da própria interface do aplicativo. */
 function origemConfiavel(evento: IpcMainInvokeEvent): boolean {
@@ -63,7 +65,7 @@ function tratar<K extends NomeOperacao, E extends z.ZodType>(
   )
 }
 
-export function registrarIpc(banco: GerenciadorBanco): void {
+export function registrarIpc(banco: GerenciadorBanco, atualizador: Atualizador): void {
   const repo = () => banco.repositorio
 
   tratar('listarCategorias', esquemaVazio, () => repo().listarCategorias())
@@ -132,4 +134,12 @@ export function registrarIpc(banco: GerenciadorBanco): void {
     const copia = await banco.restaurarBackup(origem)
     return { concluido: true, caminho: copia }
   })
+
+  tratar('infoAtualizacao', esquemaVazio, () => atualizador.info())
+  tratar('verificarAtualizacao', esquemaVazio, () => atualizador.verificar())
+  tratar('baixarAtualizacao', esquemaVazio, () => atualizador.baixar())
+  tratar('instalarAtualizacao', esquemaVazio, () => atualizador.instalar())
+  tratar('definirAtualizacaoAutomatica', esquemaAtivacao, (p) =>
+    atualizador.definirAutomatica(p.ativa)
+  )
 }

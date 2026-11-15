@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, renameSync, rmSync } from 'node:fs'
+import { copyFileSync, mkdirSync, readdirSync, renameSync, rmSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import Database from 'better-sqlite3'
 import { ErroNegocio } from './erros'
@@ -49,7 +49,7 @@ export function validarBackup(caminho: string): void {
 }
 
 function carimbo(): string {
-  return new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15)
+  return new Date().toISOString().replace(/[-:.]/g, '').slice(0, 18)
 }
 
 /** Dono da conexão com o banco; troca a conexão com segurança ao restaurar. */
@@ -72,6 +72,26 @@ export class GerenciadorBanco {
   }
 
   /** Usa a API de backup do SQLite, que gera uma cópia consistente do banco. */
+  /**
+   * Cópia automática em `copias-de-seguranca`, mantendo só as mais recentes do
+   * mesmo motivo para a pasta não crescer sem limite.
+   */
+  async backupAutomatico(motivo: string, manter = 5): Promise<string> {
+    const pasta = join(dirname(this.caminho), 'copias-de-seguranca')
+    mkdirSync(pasta, { recursive: true })
+    const destino = join(pasta, `${motivo}-${carimbo()}.sqlite`)
+    await this.db.backup(destino)
+    validarBackup(destino)
+
+    const antigas = readdirSync(pasta)
+      .filter((nome) => nome.startsWith(`${motivo}-`) && nome.endsWith('.sqlite'))
+      .sort()
+      .reverse()
+      .slice(manter)
+    for (const nome of antigas) rmSync(join(pasta, nome), { force: true })
+    return destino
+  }
+
   async exportarBackup(destino: string): Promise<void> {
     if (resolve(destino) === resolve(this.caminho)) {
       throw new ErroNegocio('Escolha um local diferente do banco em uso.')

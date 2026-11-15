@@ -1,5 +1,17 @@
 # Histórico de versões
 
+## 0.4.0 — Atualização automática
+
+### Novidades
+
+- **Atualização automática:** ao abrir, o aplicativo procura versão nova nas Releases do GitHub. Se houver, avisa e só baixa e instala quando você pede.
+- **Backup antes de atualizar:** uma cópia dos dados é guardada antes de cada instalação. As 5 mais recentes ficam em `copias-de-seguranca`, na pasta de dados.
+- **Configurações > Atualizações:** mostra a versão instalada, deixa procurar na hora e desligar a busca automática.
+
+### Importante
+
+- Quem está na 0.3.0 ou anterior precisa instalar a 0.4.0 manualmente uma vez. Daí em diante, as atualizações chegam pelo próprio aplicativo.
+
 ## 0.3.0 — Painel inteligente e planejamento
 
 A versão que transforma o aplicativo de um registro de contas em um auxílio para decidir.

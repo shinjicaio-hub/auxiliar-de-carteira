@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { _electron, type ElectronApplication, type Page } from 'playwright-core'
@@ -13,7 +13,14 @@ let app: ElectronApplication
 let pagina: Page
 
 async function abrir(): Promise<void> {
-  const env = { ...process.env, AUX_CARTEIRA_PASTA_DADOS: join(pasta, 'dados') } as Record<string, string>
+  const dados = join(pasta, 'dados')
+  // Estes testes não devem consultar as Releases do GitHub de verdade.
+  mkdirSync(dados, { recursive: true })
+  const preferencias = join(dados, 'configuracoes.json')
+  if (!existsSync(preferencias)) {
+    writeFileSync(preferencias, JSON.stringify({ atualizacaoAutomatica: false }))
+  }
+  const env = { ...process.env, AUX_CARTEIRA_PASTA_DADOS: dados } as Record<string, string>
   // O VS Code define esta variável, que faria o Electron rodar como Node.
   delete env['ELECTRON_RUN_AS_NODE']
   app = await _electron.launch(
@@ -81,7 +88,7 @@ describe('aplicativo real', () => {
       process: typeof (globalThis as Record<string, unknown>)['process'],
       operacoes: Object.keys(window.carteira).length
     }))
-    expect(ambiente).toEqual({ require: 'undefined', process: 'undefined', operacoes: 19 })
+    expect(ambiente).toEqual({ require: 'undefined', process: 'undefined', operacoes: 25 })
   })
 
   it('recusa dados inválidos enviados direto pelo IPC', async () => {

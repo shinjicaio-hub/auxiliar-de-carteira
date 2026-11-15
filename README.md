@@ -25,7 +25,7 @@ As imagens usam dados fictícios. O que mudou em cada versão está no [históri
 3. Abra pelo atalho **Auxiliar de Carteira** na área de trabalho ou no menu Iniciar.
 4. Comece em **Renda e despesas fixas**: cadastre o salário e as contas uma vez, e eles aparecem todos os meses.
 
-Para atualizar, feche o aplicativo e rode o instalador da versão nova. Os dados são mantidos.
+A partir da versão 0.4.0, o aplicativo avisa quando há versão nova e se atualiza sozinho, depois de você confirmar. Antes de instalar, ele guarda um backup dos dados. Para atualizar uma versão anterior à 0.4.0, feche o aplicativo e rode o instalador novo; os dados são mantidos.
 
 O instalador não tem assinatura digital, que é um certificado pago. Por isso o Windows pode mostrar "O Windows protegeu o computador". Clique em **Mais informações** e depois em **Executar assim mesmo**.
 
@@ -36,6 +36,7 @@ O instalador não tem assinatura digital, que é um certificado pago. Por isso o
 - **Renda e despesas fixas:** salário e contas que se repetem todo mês.
 - **Lançamentos:** lista completa do mês, com filtros.
 - **Registrar gasto:** botão sempre visível para anotar um gasto na hora.
+- **Configurações > Atualizações:** versão instalada, busca manual e opção de desligar a busca automática.
 
 Os alertas seguem regras fixas e aparecem só quando há algo a dizer. Uma categoria só é apontada como "acima do normal" com ao menos dois meses de histórico dela, e quando passa da média em 20% e R$ 50,00. O ritmo de gastos livres só é projetado a partir do dia 5. No simulador, "apertado" significa sobrar menos de 10% da renda no pior mês.
 
