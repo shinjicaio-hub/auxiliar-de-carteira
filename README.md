@@ -4,6 +4,8 @@ Aplicativo desktop para organizar o orçamento mensal pessoal. Funciona offline,
 
 Ele responde: quanto vou receber, quanto está comprometido, quanto vai para investimentos, quanto reservei para lazer e quanto ainda posso gastar.
 
+**[Baixar o Auxiliar de Carteira](https://shinjicaio-hub.github.io/auxiliar-de-carteira/)**
+
 ![Resumo mensal do Auxiliar de Carteira, com dados fictícios](docs/imagens/resumo.png)
 
 ## Destaques da versão 0.3
